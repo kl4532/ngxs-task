@@ -1,22 +1,6 @@
-<!--<form [formGroup]="filterForm" class="flex gap-1">-->
-<!--  <label>Filter: </label>-->
-<!--  <div>-->
-<!--    <input type="radio" id="all" formControlName="option" value="all" checked>-->
-<!--    <label for="all">Show all</label>-->
-<!--  </div>-->
-<!--  <div>-->
-<!--    <input type="radio" id="done" formControlName="option" value="done">-->
-<!--    <label for="all">Show done</label>-->
-<!--  </div>-->
-<!--  <div>-->
-<!--    <input type="radio" id="notDone" formControlName="option" value="notDone">-->
-<!--    <label for="all">Show todo</label>-->
-<!--  </div>-->
-<!--</form>-->
-
 <form [formGroup]="filterForm">
   <mat-button-toggle-group formControlName="filter" aria-label="Font Style">
-    <mat-button-toggle value="all" value="all">All</mat-button-toggle>
+    <mat-button-toggle value="all">All</mat-button-toggle>
     <mat-button-toggle value="done">Done</mat-button-toggle>
     <mat-button-toggle value="notDone">Not done</mat-button-toggle>
   </mat-button-toggle-group>

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
 import {AppService, Todo} from './app.service';
 
 export interface CreateTodoBody {
@@ -17,9 +17,12 @@ export class AppController {
 
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getAll() {
-    return this.appService.getAll();
+  @Get('')
+  // getAll() {
+  //   return this.appService.getAll();
+  // }
+  getAll(@Query('q') q?: string, @Query('done') done?: string) {
+    return this.appService.getAll(q || '', (done === 'true' || done === 'false') ? done === 'true' : undefined);
   }
 
   @Get(':id')

@@ -44,4 +44,11 @@ export class ToggleTodo {
     }
 }
 
+export class SearchTodos {
+    static readonly type = '[Todo] Search';
+
+    constructor(public filter: string) {
+    }
+}
+
 

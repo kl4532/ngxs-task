@@ -1,0 +1,7 @@
+.item {
+  @apply flex items-center w-auto
+  m-0.5 p-1
+  border border-blue-400 rounded-md
+  bg-yellow-200;
+  width: fit-content;
+}

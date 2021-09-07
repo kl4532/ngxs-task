@@ -1,5 +1,5 @@
-<div *ngIf="todo" class="flex items-center gap-1.5 m-1">
-  <mat-checkbox  class="example-margin" (change)="toggleTodo(todo)" [checked]="todo.done">Checked</mat-checkbox>
+<div *ngIf="todo" class="item">
+  <mat-checkbox  class="example-margin" (change)="toggleTodo(todo)" [checked]="todo.done"></mat-checkbox>
 <!--  <input type="checkbox" (click)="toggleTodo(todo.id)" [checked]="todo.done">-->
 
   <div *ngIf="!editMode; else edit" class="w-20 overflow-hidden"><strong>{{ todo.title }}</strong></div>

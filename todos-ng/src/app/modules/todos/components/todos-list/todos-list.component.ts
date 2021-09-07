@@ -14,12 +14,22 @@ export class TodosListComponent implements OnInit{
     filter: new FormControl('all'),
   });
 
+  loading = false;
+
   constructor(private store: Store, public todosService: TodosService) {}
 
   ngOnInit() {
     this.store.dispatch(new GetTodos());
     this.filterForm.valueChanges.subscribe(val => {
       this.store.dispatch(new UpdateFilter(val.filter));
+    });
+  }
+
+  reload() {
+    this.loading = true;
+    this.store.dispatch(new GetTodos()).subscribe(() => {
+      console.log('Loading done!');
+      this.loading = false;
     });
   }
 

@@ -1,13 +1,21 @@
 <div *ngIf="todo" class="flex items-center gap-1.5 m-1">
-  <input type="checkbox" (click)="toggleTodo(todo.id)" [checked]="todo.done">
+  <mat-checkbox  class="example-margin" (change)="toggleTodo(todo)" [checked]="todo.done">Checked</mat-checkbox>
+<!--  <input type="checkbox" (click)="toggleTodo(todo.id)" [checked]="todo.done">-->
 
   <div *ngIf="!editMode; else edit" class="w-20 overflow-hidden"><strong>{{ todo.title }}</strong></div>
   <ng-template #edit>
-    <input type="text" [value]="todo.title" #inputEdit (change)="updateTodo(todo.id, inputEdit.value)">
+    <input type="text" [value]="todo.title" #editInput (change)="updateTodo(todo.id, editInput.value)">
   </ng-template>
 
   <div *ngIf="todo.done" class="text-success w-20">DONE!</div>
   <div *ngIf="!todo.done" class="text-danger w-20">DO THIS!</div>
-  <button class="bg-blue-500 rounded w-16 text-white" (click)="editMode = !editMode">Edit</button>
-  <button class="bg-red-500 rounded w-16 text-white" (click)="removeTodo(todo.id)">Delete</button>
+  <button (click)="editMode = !editMode"
+          mat-mini-fab class="bg-blue-500" aria-label="Example icon button with a menu icon">
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  <button (click)="removeTodo(todo.id)"
+          mat-mini-fab color="warn" aria-label="Example icon button with a menu icon">
+    <mat-icon>delete</mat-icon>
+  </button>
 </div>

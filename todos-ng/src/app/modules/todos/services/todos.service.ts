@@ -1,7 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Select, Store} from "@ngxs/store";
-import {ToggleTodo} from "../../../stores/todos.actions";
 import {TodosState} from "../../../stores/todos.state";
 import {HttpClient} from "@angular/common/http";
 
@@ -40,12 +39,8 @@ export class TodosService {
     return this.http.delete<Todo[]>(this.url + id);
   }
 
-  updateTodo(id: number, title: string): Observable<Todo[]> {
-    return this.http.put<Todo[]>(this.url + id, {title: title});
-  }
-
-  toggleTodo(id: number): Observable<Todo> {
-      return this.store.dispatch(new ToggleTodo(id));
+  updateTodo(id: number, todo: Todo): Observable<Todo[]> {
+    return this.http.put<Todo[]>(this.url + id, {...todo});
   }
 
 }

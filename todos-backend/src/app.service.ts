@@ -49,10 +49,12 @@ export class AppService {
     });
   }
 
-  updateTodo(id: number, body: CreateTodoBody) {
+  updateTodo(id: number, body: Todo) {
     this.todos.map((todo: Todo) => {
       if (todo.id === id) {
         todo.title = body.title;
+        todo.done = body.done;
+        console.log('updated todo: ', todo);
         return todo;
       }
     });

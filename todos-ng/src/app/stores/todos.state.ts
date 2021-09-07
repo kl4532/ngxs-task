@@ -53,22 +53,25 @@ export class TodosState {
       filter: action.filter
     })
   }
-
-  @Action(ToggleTodo)
-  toggleTodo(context: StateContext<TodosStateModel>, action: ToggleTodo) {
-    const state = context.getState();
-    state.todos.map(todo => {
-      if(todo.id === action.id) {
-        todo.done = !todo.done;
-        return todo;
-      }
-      return todo
-    });
-    const todoCopy = [...state.todos];
-    context.patchState( {
-      todos: todoCopy
-    })
-  }
+  //
+  // @Action(UpdateTodo)
+  // toggleTodo(context: StateContext<TodosStateModel>, action: UpdateTodo) {
+  //   this.todosService.updateTodo(action.todo.id, action.todo).subscribe(todos => {
+  //         const state = context.getState();
+  //         state.todos.map(todo => {
+  //           if(todo.id === action.todo.id) {
+  //             todo.done = !todo.done;
+  //             return todo;
+  //           }
+  //           return todo
+  //         });
+  //         const todoCopy = [...state.todos];
+  //         context.patchState( {
+  //           todos: todoCopy
+  //         })
+  //       }
+  //   )
+  // }
 
   @Action(RemoveTodo)
   removeTodo(context: StateContext<TodosStateModel>, action: RemoveTodo) {
@@ -88,18 +91,41 @@ export class TodosState {
       context.patchState( {
         todos: todoCopy
       })
-      console.log('state', state);
     });
   }
 
   @Action(UpdateTodo)
   updateTodo(context: StateContext<TodosStateModel>, action: UpdateTodo) {
-    this.todosService.updateTodo(action.id, action.title).subscribe((todos:any) => {
-      console.log('up', todos);
+    const state = context.getState()
+    const done = state.todos.find(todo => todo.id === action.id)?.done;
+    const todo = {
+      title: action.title,
+      id: action.id,
+      done: done || false
+    }
+
+    console.log('New todo', todo);
+
+    return this.todosService.updateTodo(action.id, todo).subscribe((todos: any) => {
+      console.log(todos);
         context.patchState( {
           todos: todos
         })
       }
+    )
+  }
+
+  @Action(ToggleTodo)
+  toggleTodo(context: StateContext<TodosStateModel>, action: ToggleTodo) {
+    const state = context.getState()
+    const todo = action.todo;
+    todo.done = !todo.done;
+
+    this.todosService.updateTodo(action.todo.id, todo).subscribe((todos:Todo[]) => {
+          context.patchState( {
+            todos: todos
+          })
+        }
     )
   }
 

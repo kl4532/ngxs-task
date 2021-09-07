@@ -7,6 +7,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {environment} from "../../../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { TodoSearchComponent } from './components/todo-search/todo-search.component';
 
 @NgModule({
   imports: [
@@ -14,12 +18,16 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule
   ],
   declarations: [
     TodosListComponent,
     TodoItemComponent,
     TodosFormComponent,
+    TodoSearchComponent,
   ],
   exports: [
     TodoItemComponent,

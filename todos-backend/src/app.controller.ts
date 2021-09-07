@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { AppService } from './app.service';
+import {AppService, Todo} from './app.service';
 
 export interface CreateTodoBody {
   title: string;
@@ -34,7 +34,7 @@ export class AppController {
   }
 
   @Put(':id')
-  updateTodo(@Param('id') id: string, @Body() body: CreateTodoBody) {
+  updateTodo(@Param('id') id: string, @Body() body: Todo) {
     const numId = +id;
     return this.appService.updateTodo(numId, body);
   }

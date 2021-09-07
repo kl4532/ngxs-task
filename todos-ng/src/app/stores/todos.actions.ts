@@ -1,16 +1,11 @@
 // CRUD: Create ✅, Read, Update, Delete
 
+import {Todo} from "../modules/todos/services/todos.service";
+
 export class CreateTodo {
     static readonly type = '[Todo] CreateTodo';
 
     constructor(public title: string) {
-    }
-}
-
-export class ToggleTodo {
-    static readonly type = '[Todo] Toggle';
-
-    constructor(public id: number) {
     }
 }
 
@@ -39,6 +34,13 @@ export class GetTodos {
     static readonly type = '[Todo] GetTodos';
 
     constructor() {
+    }
+}
+
+export class ToggleTodo {
+    static readonly type = '[Todo] Toggle';
+
+    constructor(public todo: Todo) {
     }
 }
 

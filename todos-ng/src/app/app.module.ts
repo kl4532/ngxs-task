@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TodosModule,
     NgxsModule.forRoot([TodosState]),
     NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

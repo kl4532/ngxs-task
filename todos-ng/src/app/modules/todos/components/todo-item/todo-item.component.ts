@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Todo, TodosService} from '../../services/todos.service';
-import {RemoveTodo, UpdateTodo} from "../../../../stores/todos.actions";
+import {RemoveTodo, ToggleTodo, UpdateTodo} from "../../../../stores/todos.actions";
 import {Store} from "@ngxs/store";
 
 @Component({
@@ -14,8 +14,8 @@ export class TodoItemComponent {
   constructor(private todoService: TodosService,
               private store: Store) {}
 
-  toggleTodo(id: number) {
-    this.todoService.toggleTodo(id);
+  toggleTodo(todo: Todo) {
+    this.store.dispatch(new ToggleTodo(todo));
   }
 
   removeTodo(id: number) {

@@ -33,6 +33,7 @@ import { TodoSearchComponent } from './components/todo-search/todo-search.compon
     TodoItemComponent,
     TodosListComponent,
     TodosFormComponent,
+    TodoSearchComponent
   ],
   providers: [
     {

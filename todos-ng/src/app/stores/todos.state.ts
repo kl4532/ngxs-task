@@ -1,6 +1,6 @@
 import {Todo, TodosService} from '../modules/todos/services/todos.service';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {CreateTodo, GetTodos, RemoveTodo, ToggleTodo, UpdateFilter, UpdateTodo} from './todos.actions';
+import {CreateTodo, GetTodos, RemoveTodo, SearchTodos, ToggleTodo, UpdateFilter, UpdateTodo} from './todos.actions';
 import {Injectable} from "@angular/core";
 import {tap} from "rxjs/operators";
 
@@ -127,6 +127,11 @@ export class TodosState {
           })
         }
     )
+  }
+
+  @Action(SearchTodos)
+  searchTodos(context: StateContext<TodosStateModel>, action: SearchTodos) {
+  //  TBC.
   }
 
 }

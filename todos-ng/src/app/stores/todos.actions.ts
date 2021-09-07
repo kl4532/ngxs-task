@@ -1,45 +1,45 @@
 // CRUD: Create ✅, Read, Update, Delete
 
 export class CreateTodo {
-  static readonly type = '[Todo] CreateTodo';
+    static readonly type = '[Todo] CreateTodo';
 
-  constructor(public title: string) {
-  }
+    constructor(public title: string) {
+    }
 }
 
 export class ToggleTodo {
-  static readonly type = '[Todo] Toggle';
+    static readonly type = '[Todo] Toggle';
 
-  constructor(public id: number) {
-  }
+    constructor(public id: number) {
+    }
 }
 
 export class RemoveTodo {
-  static readonly type = '[Todo] Remove';
+    static readonly type = '[Todo] Remove';
 
-  constructor(public id: number) {
-  }
+    constructor(public id: number) {
+    }
 }
 
 export class UpdateTodo {
-  static readonly type = '[Todo] Update';
+    static readonly type = '[Todo] Update';
 
-  constructor(public id: number, public newTitle: string) {
-  }
+    constructor(public id: number, public newTitle: string) {
+    }
 }
 
 export class UpdateFilter {
-  static readonly type = '[Todo] UpdateFilter';
+    static readonly type = '[Todo] UpdateFilter';
 
-  constructor(public filter: string) {
-  }
+    constructor(public filter: string) {
+    }
 }
 
 export class GetTodos {
-  static readonly type = '[Todo] UpdateFilter';
+    static readonly type = '[Todo] GetTodos';
 
-  constructor() {
-  }
+    constructor() {
+    }
 }
 
 

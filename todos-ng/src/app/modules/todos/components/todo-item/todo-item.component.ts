@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Todo, TodosService} from '../../services/todos.service';
-import {RemoveTodo, ToggleTodo, UpdateTodo} from "../../../../stores/todos.actions";
+import {RemoveTodo, UpdateTodo} from "../../../../stores/todos.actions";
 import {Store} from "@ngxs/store";
 
 @Component({
@@ -11,17 +11,18 @@ import {Store} from "@ngxs/store";
 export class TodoItemComponent {
   @Input() todo: Todo | undefined;
   editMode = false;
-  constructor(private todoService: TodosService) {}
+  constructor(private todoService: TodosService,
+              private store: Store) {}
 
   toggleTodo(id: number) {
     this.todoService.toggleTodo(id);
   }
 
   removeTodo(id: number) {
-    this.todoService.removeTodo(id);
+    this.store.dispatch(new RemoveTodo(id));
   }
 
   updateTodo(id: number, title: string) {
-    this.todoService.updateTodo(id, title);
+    this.store.dispatch(new UpdateTodo(id, title));
   }
 }

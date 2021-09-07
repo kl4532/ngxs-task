@@ -40,7 +40,6 @@ export class TodosState {
   getTodos(context: StateContext<TodosStateModel>) {
     return this.todosService.getTodos().pipe(tap((todos: Todo[]) => {
       const state = context.getState();
-      console.log('todos from backnd', todos);
       context.patchState( {
         ...state,
         todos: todos,
@@ -73,50 +72,35 @@ export class TodosState {
 
   @Action(RemoveTodo)
   removeTodo(context: StateContext<TodosStateModel>, action: RemoveTodo) {
-    const state = context.getState();
-    const todos = state.todos.filter(todo => todo.id !== action.id);
-    context.patchState( {
-      todos: todos
+    this.todosService.removeTodo(action.id).subscribe((todos: any) => {
+          context.patchState( {
+            todos: todos
+          })
     })
   }
 
   @Action(CreateTodo)
   createTodo(context: StateContext<TodosStateModel>, action: CreateTodo) {
-    console.log('CreateTodo method executed');
-    console.log('context', context);
-    console.log('action', action);
-
-    const todo: Todo = {
-      title: action.title,
-      done: false,
-      id: this.counter
-    }
-
-    this.counter += 1;
-
-    const state = context.getState();
-    const todoCopy = [...state.todos];
-    todoCopy.push(todo);
-
-    context.patchState( {
-      todos: todoCopy
-    })
-
-    console.log('state', state);
+    this.todosService.addTodo(action.title).subscribe((todo: any) => {
+      const state = context.getState();
+      const todoCopy = [...state.todos];
+      todoCopy.push(todo);
+      context.patchState( {
+        todos: todoCopy
+      })
+      console.log('state', state);
+    });
   }
 
   @Action(UpdateTodo)
   updateTodo(context: StateContext<TodosStateModel>, action: UpdateTodo) {
-    const state = context.getState();
-    const todos = state.todos.map((todo: Todo) => {
-      if(todo.id === action.id) {
-        todo.title = action.newTitle;
+    this.todosService.updateTodo(action.id, action.title).subscribe((todos:any) => {
+      console.log('up', todos);
+        context.patchState( {
+          todos: todos
+        })
       }
-      return todo;
-    });
-    context.patchState( {
-      todos: todos
-    })
+    )
   }
 
 }

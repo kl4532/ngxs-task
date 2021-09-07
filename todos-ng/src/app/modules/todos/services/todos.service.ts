@@ -1,8 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {delay, tap} from 'rxjs/operators';
 import {Select, Store} from "@ngxs/store";
-import {CreateTodo, RemoveTodo, ToggleTodo, UpdateTodo} from "../../../stores/todos.actions";
+import {ToggleTodo} from "../../../stores/todos.actions";
 import {TodosState} from "../../../stores/todos.state";
 import {HttpClient} from "@angular/common/http";
 
@@ -10,6 +9,10 @@ export interface Todo {
   id: number;
   title: string;
   done: boolean;
+}
+
+export interface CreateTodoBody {
+    title: string;
 }
 
 @Injectable({
@@ -26,42 +29,19 @@ export class TodosService {
               private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
-    // return this.todos$
-    //     .pipe(
-    //         // TOFIX: delay blocks todos somehow
-    //         // delay(500 + Math.random() * 1000),
-    //     );
     return this.http.get<Todo[]>(this.url);
   }
 
-  addTodo(title: string): Observable<Todo> {
-    return this.store.dispatch(new CreateTodo(title))
-      .pipe(
-        delay(500 + Math.random() * 1000),
-        tap((todo) => {
-          this.todos.push(todo);
-        }),
-      );
+  addTodo(title: string): Observable<CreateTodoBody> {
+    return this.http.post<CreateTodoBody>(this.url, {title: title});
   }
 
-  removeTodo(id: number): Observable<Todo> {
-    return this.store.dispatch(new RemoveTodo(id))
-        .pipe(
-            delay(500 + Math.random() * 1000),
-            tap((todo: Todo) => {
-              this.todos.filter(todo => todo.id !== id);
-            }),
-        );
+  removeTodo(id: number): Observable<Todo[]> {
+    return this.http.delete<Todo[]>(this.url + id);
   }
 
-  updateTodo(id: number, newName: string): Observable<Todo> {
-    return this.store.dispatch(new UpdateTodo(id, newName))
-        .pipe(
-            delay(500 + Math.random() * 1000),
-            tap((todo) => {
-              this.todos.filter(todo => todo.id !== id);
-            }),
-        );
+  updateTodo(id: number, title: string): Observable<Todo[]> {
+    return this.http.put<Todo[]>(this.url + id, {title: title});
   }
 
   toggleTodo(id: number): Observable<Todo> {

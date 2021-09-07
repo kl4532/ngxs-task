@@ -24,7 +24,7 @@ export class RemoveTodo {
 export class UpdateTodo {
     static readonly type = '[Todo] Update';
 
-    constructor(public id: number, public newTitle: string) {
+    constructor(public id: number, public title: string) {
     }
 }
 

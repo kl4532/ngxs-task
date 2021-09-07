@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {TodosService} from "../../services/todos.service";
+import {Store} from "@ngxs/store";
+import {CreateTodo} from "../../../../stores/todos.actions";
 
 @Component({
   selector: 'app-todos-form',
@@ -7,10 +8,10 @@ import {TodosService} from "../../services/todos.service";
   styleUrls: ['./todos-form.component.scss']
 })
 export class TodosFormComponent {
-  constructor(private todosService: TodosService) {
+  constructor(private store: Store) {
   }
 
   addTodo(todoName: string) {
-    this.todosService.addTodo(todoName);
+    this.store.dispatch(new CreateTodo(todoName));
   }
 }

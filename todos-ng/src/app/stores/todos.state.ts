@@ -56,11 +56,9 @@ export class TodosState {
 
   @Action(RemoveTodo)
   removeTodo(context: StateContext<TodosStateModel>, action: RemoveTodo) {
-    this.todosService.removeTodo(action.id).subscribe((todos: any) => {
-          context.patchState( {
-            todos: todos
-          })
-    })
+    this.todosService.removeTodo(action.id).subscribe((todos:Todo[]) =>
+        this.getFilteredTodos(context, todos)
+    );
   }
 
   @Action(CreateTodo)
@@ -85,7 +83,9 @@ export class TodosState {
       done: done || false
     }
 
-    return this.updateAndPatchTodos(todo.id, todo, context);
+    return this.todosService.updateTodo(todo.id, todo).subscribe((todos:Todo[]) =>
+        this.getFilteredTodos(context, todos)
+    );
   }
 
   @Action(ToggleTodo)
@@ -93,24 +93,26 @@ export class TodosState {
     const todo = action.todo;
     todo.done = !todo.done;
 
-    return this.updateAndPatchTodos(action.todo.id, todo, context);
+    return this.todosService.updateTodo(action.todo.id, todo).subscribe((todos:Todo[]) =>
+        this.getFilteredTodos(context, todos)
+    );
   }
 
-  updateAndPatchTodos(id: number, todo: Todo, context: StateContext<TodosStateModel>) {
-    return this.todosService.updateTodo(id, todo).subscribe((todos:Todo[]) => {
+  // TODO ?? this is performed on backend side when getting all todos, how to avoid duplication when updating?
+  // bcs update returns all unflitered todos
+  getFilteredTodos(context: StateContext<TodosStateModel>, todos: Todo[]) {
       const filter = this.todosService.filterSearch.value;
-          // TODO ?? this is performed on backend side when getting all, how to avoid duplication when updating?
-          // bcs update returns all unflitered todos
-          if( filter !== '') {
-            todos = todos.filter((todo) => {
-              return todo.title.toLowerCase().indexOf(filter) !== -1;
-            });
-          }
-          context.patchState( {
-            todos: todos
-          })
-        }
-    )
+      if( filter !== '') {
+        todos = todos.filter((todo) => {
+          return todo.title.toLowerCase().indexOf(filter) !== -1;
+        });
+      }
+      console.log(this.todosService.filterSearch.value);
+      console.log(todos);
+
+      context.patchState( {
+        todos: todos
+      });
   }
 
 }

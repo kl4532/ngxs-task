@@ -1,6 +1,6 @@
 import {Todo, TodosService} from '../modules/todos/services/todos.service';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {CreateTodo, GetTodos, RemoveTodo, SearchTodos, ToggleTodo, UpdateFilter, UpdateTodo} from './todos.actions';
+import {CreateTodo, GetTodos, RemoveTodo, ToggleTodo, UpdateFilter, UpdateTodo} from './todos.actions';
 import {Injectable} from "@angular/core";
 import {tap} from "rxjs/operators";
 
@@ -37,8 +37,8 @@ export class TodosState {
   }
 
   @Action(GetTodos)
-  getTodos(context: StateContext<TodosStateModel>) {
-    return this.todosService.getTodos().pipe(tap((todos: Todo[]) => {
+  getTodos(context: StateContext<TodosStateModel>, action: GetTodos) {
+    return this.todosService.getTodos(action.filter).pipe(tap((todos: Todo[]) => {
       const state = context.getState();
       context.patchState( {
         ...state,
@@ -53,25 +53,6 @@ export class TodosState {
       filter: action.filter
     })
   }
-  //
-  // @Action(UpdateTodo)
-  // toggleTodo(context: StateContext<TodosStateModel>, action: UpdateTodo) {
-  //   this.todosService.updateTodo(action.todo.id, action.todo).subscribe(todos => {
-  //         const state = context.getState();
-  //         state.todos.map(todo => {
-  //           if(todo.id === action.todo.id) {
-  //             todo.done = !todo.done;
-  //             return todo;
-  //           }
-  //           return todo
-  //         });
-  //         const todoCopy = [...state.todos];
-  //         context.patchState( {
-  //           todos: todoCopy
-  //         })
-  //       }
-  //   )
-  // }
 
   @Action(RemoveTodo)
   removeTodo(context: StateContext<TodosStateModel>, action: RemoveTodo) {
@@ -127,11 +108,6 @@ export class TodosState {
           })
         }
     )
-  }
-
-  @Action(SearchTodos)
-  searchTodos(context: StateContext<TodosStateModel>, action: SearchTodos) {
-  //  TBC.
   }
 
 }

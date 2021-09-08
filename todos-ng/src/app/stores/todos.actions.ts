@@ -33,7 +33,7 @@ export class UpdateFilter {
 export class GetTodos {
     static readonly type = '[Todo] GetTodos';
 
-    constructor() {
+    constructor(public filter: string) {
     }
 }
 

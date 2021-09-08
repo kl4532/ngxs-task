@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Select, Store} from "@ngxs/store";
 import {TodosState} from "../../../stores/todos.state";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 export interface Todo {
   id: number;
@@ -27,8 +27,11 @@ export class TodosService {
               private store: Store,
               private http: HttpClient) {}
 
-  getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.url);
+  getTodos(filter: string = ''): Observable<Todo[]> {
+    const params = new HttpParams()
+        .set('q', filter)
+
+    return this.http.get<Todo[]>(this.url, {params: params});
   }
 
   addTodo(title: string): Observable<CreateTodoBody> {

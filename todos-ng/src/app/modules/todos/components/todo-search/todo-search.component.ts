@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {fromEvent, Subscription} from "rxjs";
-import {debounceTime, tap} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, map, switchMap, tap} from "rxjs/operators";
 import {Store} from "@ngxs/store";
-import {SearchTodos} from "../../../../stores/todos.actions";
+import {GetTodos} from "../../../../stores/todos.actions";
 
 @Component({
   selector: 'app-todo-search',
@@ -17,13 +17,12 @@ export class TodoSearchComponent implements AfterViewInit {
   constructor(private store: Store) { }
 
   ngAfterViewInit(): void {
-    this.sub = fromEvent(this.input?.nativeElement, 'input').pipe(
+    const input = this.input?.nativeElement
+    this.sub = fromEvent(input, 'input').pipe(
         debounceTime(250),
-        tap(() => {
-          console.log('Search todo', this.input?.nativeElement.value);
-          const filter = this.input?.nativeElement.value;
-          return this.store.dispatch(new SearchTodos(filter));
-        })
+        distinctUntilChanged(),
+        map(() => input.value),
+        switchMap((filter: string) => this.store.dispatch(new GetTodos(filter)))
     ).subscribe();
   }
 

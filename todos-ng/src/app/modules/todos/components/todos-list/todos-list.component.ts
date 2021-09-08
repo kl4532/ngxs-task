@@ -19,7 +19,7 @@ export class TodosListComponent implements OnInit{
   constructor(private store: Store, public todosService: TodosService) {}
 
   ngOnInit() {
-    this.store.dispatch(new GetTodos(''));
+    this.store.dispatch(new GetTodos());
     this.filterForm.valueChanges.subscribe(val => {
       this.store.dispatch(new UpdateFilter(val.filter));
     });
@@ -27,7 +27,7 @@ export class TodosListComponent implements OnInit{
 
   reload() {
     this.loading = true;
-    this.store.dispatch(new GetTodos('')).subscribe(() => {
+    this.store.dispatch(new GetTodos()).subscribe(() => {
       console.log('Loading done!');
       this.loading = false;
     });

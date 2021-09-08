@@ -37,8 +37,8 @@ export class TodosState {
   }
 
   @Action(GetTodos)
-  getTodos(context: StateContext<TodosStateModel>, action: GetTodos) {
-    return this.todosService.getTodos(action.filter).pipe(tap((todos: Todo[]) => {
+  getTodos(context: StateContext<TodosStateModel>) {
+    return this.todosService.getTodos().pipe(tap((todos: Todo[]) => {
       const state = context.getState();
       context.patchState( {
         ...state,
@@ -85,24 +85,27 @@ export class TodosState {
       done: done || false
     }
 
-    console.log('New todo', todo);
-
-    return this.todosService.updateTodo(action.id, todo).subscribe((todos: any) => {
-      console.log(todos);
-        context.patchState( {
-          todos: todos
-        })
-      }
-    )
+    return this.updateAndPatchTodos(todo.id, todo, context);
   }
 
   @Action(ToggleTodo)
   toggleTodo(context: StateContext<TodosStateModel>, action: ToggleTodo) {
-    const state = context.getState()
     const todo = action.todo;
     todo.done = !todo.done;
 
-    this.todosService.updateTodo(action.todo.id, todo).subscribe((todos:Todo[]) => {
+    return this.updateAndPatchTodos(action.todo.id, todo, context);
+  }
+
+  updateAndPatchTodos(id: number, todo: Todo, context: StateContext<TodosStateModel>) {
+    return this.todosService.updateTodo(id, todo).subscribe((todos:Todo[]) => {
+      const filter = this.todosService.filterSearch.value;
+          // TODO ?? this is performed on backend side when getting all, how to avoid duplication when updating?
+          // bcs update returns all unflitered todos
+          if( filter !== '') {
+            todos = todos.filter((todo) => {
+              return todo.title.toLowerCase().indexOf(filter) !== -1;
+            });
+          }
           context.patchState( {
             todos: todos
           })

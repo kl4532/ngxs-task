@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Select, Store} from "@ngxs/store";
 import {TodosState} from "../../../stores/todos.state";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -22,15 +22,15 @@ export class TodosService {
   todos$!: Observable<Todo[]>;
 
   todos: Todo[] = [];
+  filterSearch = new BehaviorSubject('');
 
   constructor(@Inject('API_URL') private url: string,
               private store: Store,
               private http: HttpClient) {}
 
-  getTodos(filter: string = ''): Observable<Todo[]> {
+  getTodos(): Observable<Todo[]> {
     const params = new HttpParams()
-        .set('q', filter)
-
+        .set('q', this.filterSearch.value)
     return this.http.get<Todo[]>(this.url, {params: params});
   }
 

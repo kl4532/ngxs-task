@@ -22,7 +22,10 @@ export class AppController {
   //   return this.appService.getAll();
   // }
   getAll(@Query('q') q?: string, @Query('done') done?: string) {
-    return this.appService.getAll(q || '', (done === 'true' || done === 'false') ? done === 'true' : undefined);
+    return this.appService.getAll(
+      q || '',
+      done === 'true' || done === 'false' ? done === 'true' : undefined,
+    );
   }
 
   @Get(':id')

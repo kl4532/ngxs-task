@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTodoBody } from "./app.controller";
-import {delay, of} from "rxjs";
+import {delay, Observable, of} from "rxjs";
 
 export interface Todo {
   title: string;
@@ -11,30 +11,30 @@ export interface Todo {
 @Injectable()
 export class AppService {
 
-  // todos: Todo[] = Array.apply(null, Array(100)).map((_, i: number) => {
-  //   const d = new Date().toISOString();
-  //   console.log('d', d);
-  //   return {
-  //     id: i + 1,
-  //     done: Math.random() < 0.7,
-  //     title: 'Test Lorem ' + i,
-  //     updatedAt: d,
-  //     createdAt: d
-  //   } as Todo;
-  // });
+  todos: Todo[] = Array.apply(null, Array(100)).map((_, i: number) => {
+    const d = new Date().toISOString();
+    console.log('d', d);
+    return {
+      id: i + 1,
+      done: Math.random() < 0.7,
+      title: 'Todo' + i,
+      updatedAt: d,
+      createdAt: d
+    } as Todo;
+  });
 
-  todos: Todo[] = [
-    {
-      title: 'Foo',
-      id: 1,
-      done: false,
-    },
-    {
-      title: 'Foo2',
-      id: 2,
-      done: true,
-    },
-  ];
+  // todos: Todo[] = [
+  //   {
+  //     title: 'Foo',
+  //     id: 1,
+  //     done: false,
+  //   },
+  //   {
+  //     title: 'Foo2',
+  //     id: 2,
+  //     done: true,
+  //   },
+  // ];
 
   counter = 1000;
 
@@ -42,7 +42,7 @@ export class AppService {
   //   return Promise.resolve(this.todos);
   // }
 
-  getAll(q = '', done?: boolean | undefined) {
+  getAll(q = '', done?: boolean | undefined): Observable<Todo[]> {
     let todos: Todo[] = [];
 
     if (q) {
@@ -61,7 +61,6 @@ export class AppService {
 
     return of(todos).pipe(delay(Math.random() * 2000));
   }
-
 
   getById(id: number): Promise<Todo> {
     return Promise.resolve(this.todos.find((todo: Todo) => todo.id === id));
